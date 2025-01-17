@@ -1,0 +1,13 @@
+[package]
+name = "http_sms_to_email"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = { version = "4.9.0", features = ["openssl"] }
+config = "0.15.6"
+env_logger = "0.11.6"
+lettre = "0.11.11"
+openssl = "0.10.68"
+serde = {version="1.0.217", features=["derive"]}
+time = "0.3.37"
