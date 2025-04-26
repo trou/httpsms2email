@@ -1,6 +1,6 @@
 use actix_web::{post, web, App, HttpResponse, HttpServer, Responder, middleware::Logger};
 use config::Config;
-use lettre::{Message, SmtpTransport, Transport, address::AddressError, message::MessageBuilder};
+use lettre::{Message, SmtpTransport, Transport, address::AddressError, message::MessageBuilder, message::header::{ContentType, ContentTransferEncoding}};
 use serde::Deserialize;
 use std::sync::Arc;
 use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
@@ -66,6 +66,8 @@ async fn send_sms(
     let email = Message::builder()
         .from(config.sender_email.parse().unwrap())
         .to_addresses(&config.destination_emails.join(", ")).unwrap()
+        .header(ContentType::TEXT_PLAIN)
+        .header(ContentTransferEncoding::EightBit)
         .subject(format!("SMS from {}", sms_data.from))
         .body(format!(
             "Sender: {}\nSent: {}\tReceived: {}\n\nMessage:\n{}",
